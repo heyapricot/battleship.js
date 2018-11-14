@@ -18,7 +18,16 @@ const Ship = (type, initialPosition = NaN, direction = NaN) => {
   };
   if (typeof properties[type] === 'undefined') throw new Error('Undefined type of Ship');
   const { length } = properties[type];
-  return { length, type };
+  const targets = Array.from(Array(length)).map(() => false);
+  const hit = (position) => {
+    if (position < length && position >= 0) targets[position] = true;
+    return targets[position];
+  };
+  const isTargetHit = position => targets[position];
+
+  return {
+    hit, isTargetHit, length, type,
+  };
 };
 
 module.exports = {
