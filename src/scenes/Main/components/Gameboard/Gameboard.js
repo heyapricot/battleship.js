@@ -2,15 +2,11 @@ const { Ship } = require('../Ship/Ship');
 
 const Gameboard = (width = 10, length = 10) => {
   let cells = [];
-  const isTaken = (coords) => {
-    if (coords[0] < width && coords[1] < length) {
-      if (typeof cells[coords] === 'undefined') {
-        return false;
-      }
-      return cells[coords];
-    }
+  const getStatus = (coords) => {
+    if (coords[0] < width && coords[1] < length) return cells[coords];
     throw new Error('Requested coordinates are out of bounds');
   };
+
   const put = (shipType, start, direction = 'horizontal') => {
     const ship = Ship(shipType);
     let x; let y;
@@ -27,14 +23,14 @@ const Gameboard = (width = 10, length = 10) => {
       }
     }))(direction);
 
-    if (cellsToOccupy.reduce((acc, val) => acc || isTaken(val), false) === false) {
+    if (cellsToOccupy.reduce((acc, val) => acc && typeof cells[val] === 'undefined', true)) {
       cellsToOccupy.forEach((coordinate) => { cells[coordinate] = ship; });
     } else {
       throw new Error('Ships can\'t overlap');
     }
   };
   const receiveAttack = (coordinates) => {
-    const ship = isTaken(coordinates);
+    const ship = getStatus(coordinates);
     if (ship) {
       ship.hit();
       return true;
@@ -42,7 +38,9 @@ const Gameboard = (width = 10, length = 10) => {
     return false;
   };
   const reset = () => { cells = []; };
-  return { isTaken, put, receiveAttack, reset };
+  return {
+    getStatus, put, receiveAttack, reset,
+  };
 };
 
 module.exports = {

@@ -10,13 +10,13 @@ describe('Gameboard', () => {
     it('Can place a Ship in horizontal position', () => {
       board.put('carrier', [0, 0]);
       for (let i = 0; i < shipTypes.carrier.length; i += 1) {
-        expect(board.isTaken([i, 0])).not.toBe(false);
+        expect(board.getStatus([i, 0])).not.toBe('undefined');
       }
     });
     it('Can place a Ship in vertical position', () => {
       board.put('carrier', [0, 0], 'vertical');
       for (let i = 0; i < shipTypes.carrier.length; i += 1) {
-        expect(board.isTaken([0, i])).not.toBe(false);
+        expect(board.getStatus([0, i])).not.toBe('undefined');
       }
     });
   });
