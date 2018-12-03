@@ -1,7 +1,7 @@
 const { Ship } = require('../Ship/Ship');
 
 const Gameboard = (width = 10, length = 10) => {
-  const cells = [];
+  let cells = [];
   const isTaken = (coords) => {
     if (coords[0] < width && coords[1] < length) {
       if (typeof cells[coords] === 'undefined') {
@@ -15,23 +15,27 @@ const Gameboard = (width = 10, length = 10) => {
     const ship = Ship(shipType);
     let x; let y;
     [x, y] = start;
-    switch (direction) {
-      case 'horizontal':
-        for (let i = 0; i < ship.length; i += 1){
-          cells[[x + i, y]] = ship;
-        }
-        break;
-      case 'vertical':
-        for (let i = 0; i < ship.length; i += 1){
-          cells[[x, y + i]] = ship;
-        }
-        break;
-      default:
-        throw new Error('Invalid direction');
+
+    const cellsToOccupy = (dir => Array.from(Array(ship.length)).map((current, index) => {
+      switch (dir) {
+        case 'horizontal':
+          return [x + index, y];
+        case 'vertical':
+          return [x, y + index];
+        default:
+          throw new Error('Invalid direction');
+      }
+    }))(direction);
+
+    if (cellsToOccupy.reduce((acc, val) => acc || isTaken(val), false) === false) {
+      cellsToOccupy.forEach((coordinate) => { cells[coordinate] = ship; });
+    } else {
+      throw new Error('Ships can\'t overlap');
     }
   };
-  return { cells, isTaken, put };
-}
+  const reset = () => { cells = []; };
+  return { isTaken, put, reset };
+};
 
 module.exports = {
   Gameboard,

@@ -4,8 +4,9 @@ const { shipTypes } = require('../../Ship/Ship');
 describe('Gameboard', () => {
   const board = Gameboard();
 
-
   describe('put', () => {
+    beforeEach(() => { board.reset(); });
+
     it('Can place a Ship in horizontal position', () => {
       board.put('carrier', [0, 0]);
       for (let i = 0; i < shipTypes.carrier.length; i += 1) {
