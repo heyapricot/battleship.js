@@ -1,4 +1,5 @@
 const { Ship } = require('../Ship/Ship');
+
 const Gameboard = (width = 10, length = 10) => {
   const cells = [];
   const isTaken = (coords) => {
