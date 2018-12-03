@@ -19,19 +19,16 @@ const shipTypes = {
 const Ship = (type) => {
   if (typeof shipTypes[type] === 'undefined') throw new Error('Undefined type of Ship');
   const { length } = shipTypes[type];
-  let targets = Array.from(Array(length)).map(() => false);
-  const hit = (position) => {
-    if (position < length && position >= 0) targets[position] = true;
-    return targets[position];
-  };
-  const isTargetHit = position => targets[position];
-  const isSunk = () => targets.reduce((acc, val) => acc && val, true);
+  let hitCount = 0;
+  const damage = () => hitCount;
+  const hit = () => { hitCount += 1; };
+  const isSunk = () => hitCount === length;
   const reset = () => {
-    targets = Array.from(Array(length)).map(() => false);
+    hitCount = 0;
   };
 
   return {
-    hit, isSunk, isTargetHit, length, reset, type,
+    damage, hit, isSunk, length, reset, type,
   };
 };
 

@@ -2,7 +2,7 @@ const { Ship } = require('../Ship');
 
 const sinkShip = (ship) => {
   for (let i = 0; i < ship.length; i += 1) {
-    ship.hit(i);
+    ship.hit();
   }
 }
 
@@ -26,8 +26,8 @@ describe('Ship', () => {
     it('returns true when the ship is hit in a specific position', () => {
       ships.forEach((ship) => {
         for (let i = 0; i < ship.length; i += 1) {
-          ship.hit(i);
-          expect(ship.isTargetHit(i)).toBe(true);
+          ship.hit();
+          expect(ship.damage()).toEqual(i + 1);
         }
       });
     });

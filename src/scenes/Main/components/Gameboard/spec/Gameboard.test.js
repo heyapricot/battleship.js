@@ -20,4 +20,20 @@ describe('Gameboard', () => {
       }
     });
   });
+
+  describe('receiveAttack', () => {
+    const x = 0;
+    const y = 0;
+
+    beforeEach(() => {
+      board.reset();
+      board.put('carrier', [x, y], 'vertical');
+    });
+
+    it('returns true if the specified coordinates hit a ship', () => {
+      for (let i = 0; i < shipTypes.carrier.length; i += 1) {
+        expect(board.receiveAttack([x, y + i])).toBe(true);
+      }
+    });
+  });
 });

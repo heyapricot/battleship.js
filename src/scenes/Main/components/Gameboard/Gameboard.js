@@ -33,8 +33,16 @@ const Gameboard = (width = 10, length = 10) => {
       throw new Error('Ships can\'t overlap');
     }
   };
+  const receiveAttack = (coordinates) => {
+    let ship;
+    if (ship = isTaken(coordinates)){
+      ship.hit();
+      return true;
+    }
+    return false;
+  };
   const reset = () => { cells = []; };
-  return { isTaken, put, reset };
+  return { isTaken, put, receiveAttack, reset };
 };
 
 module.exports = {
