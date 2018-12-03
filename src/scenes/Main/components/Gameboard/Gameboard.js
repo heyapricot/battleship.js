@@ -34,8 +34,8 @@ const Gameboard = (width = 10, length = 10) => {
     }
   };
   const receiveAttack = (coordinates) => {
-    let ship;
-    if (ship = isTaken(coordinates)){
+    const ship = isTaken(coordinates);
+    if (ship) {
       ship.hit();
       return true;
     }
