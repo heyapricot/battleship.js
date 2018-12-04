@@ -30,12 +30,18 @@ const Gameboard = (width = 10, length = 10) => {
     }
   };
   const receiveAttack = (coordinates) => {
-    const ship = getStatus(coordinates);
-    if (ship) {
-      ship.hit();
-      return true;
+    const cell = getStatus(coordinates);
+    switch (typeof cell) {
+      case 'undefined':
+        cells[coordinates] = false;
+        break;
+      case 'object':
+        cells[coordinates] = true;
+        break;
+      default:
+        return false;
     }
-    return false;
+    return getStatus(coordinates);
   };
   const reset = () => { cells = []; };
   return {

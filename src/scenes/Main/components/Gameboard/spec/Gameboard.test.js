@@ -35,5 +35,16 @@ describe('Gameboard', () => {
         expect(board.receiveAttack([x, y + i])).toBe(true);
       }
     });
+    it('returns false if the specified coordinates does not hit a ship', () => {
+      for (let i = 0; i < shipTypes.carrier.length; i += 1) {
+        expect(board.receiveAttack([x + 1, y + i])).toBe(false);
+      }
+    });
+    it('returns false if the specified coordinate was already tracked', () => {
+      expect(board.receiveAttack([x, y])).toBe(true);
+      expect(board.receiveAttack([x + 1, y + 1])).toBe(false);
+      expect(board.receiveAttack([x, y])).toBe(false);
+      expect(board.receiveAttack([x + 1, y + 1])).toBe(false);
+    });
   });
 });
