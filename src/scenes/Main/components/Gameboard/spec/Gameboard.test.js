@@ -3,6 +3,7 @@ const { shipTypes } = require('../../Ship/Ship');
 
 describe('Gameboard', () => {
   const board = Gameboard();
+  beforeEach(() => { board.reset(); });
 
   describe('put', () => {
     beforeEach(() => { board.reset(); });
@@ -45,6 +46,25 @@ describe('Gameboard', () => {
       expect(board.receiveAttack([x + 1, y + 1])).toBe(false);
       expect(board.receiveAttack([x, y])).toBe(false);
       expect(board.receiveAttack([x + 1, y + 1])).toBe(false);
+    });
+  });
+
+  describe('allSunk', () => {
+    const ships = [
+      'carrier',
+      'battleship',
+      'cruiser',
+      'submarine',
+      'destroyer',
+    ];
+    it('returns true if all Ships are sunk', () => {
+      ships.forEach((ship, index) => {
+        board.put(ship, [0, index]);
+        for (let i = 0; i < shipTypes[ship].length; i += 1) {
+          board.receiveAttack([i, index]);
+        }
+      });
+      expect(board.allSunk()).toBe(true);
     });
   });
 });

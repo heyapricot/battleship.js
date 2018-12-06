@@ -2,6 +2,10 @@ const { Ship } = require('../Ship/Ship');
 
 const Gameboard = (width = 10, length = 10) => {
   let cells = [];
+  let ships = [];
+
+  const allSunk = () => ships.reduce((accumulator, ship) => accumulator && ship.isSunk(), true);
+
   const getStatus = (coords) => {
     if (coords[0] < width && coords[1] < length) return cells[coords];
     throw new Error('Requested coordinates are out of bounds');
@@ -25,10 +29,13 @@ const Gameboard = (width = 10, length = 10) => {
 
     if (cellsToOccupy.reduce((acc, val) => acc && typeof cells[val] === 'undefined', true)) {
       cellsToOccupy.forEach((coordinate) => { cells[coordinate] = ship; });
+      ships.push(ship);
     } else {
       throw new Error('Ships can\'t overlap');
     }
+    return cellsToOccupy;
   };
+
   const receiveAttack = (coordinates) => {
     const cell = getStatus(coordinates);
     switch (typeof cell) {
@@ -36,6 +43,7 @@ const Gameboard = (width = 10, length = 10) => {
         cells[coordinates] = false;
         break;
       case 'object':
+        cell.hit();
         cells[coordinates] = true;
         break;
       default:
@@ -43,9 +51,11 @@ const Gameboard = (width = 10, length = 10) => {
     }
     return getStatus(coordinates);
   };
-  const reset = () => { cells = []; };
+
+  const reset = () => { cells = []; ships.length = 0; };
+
   return {
-    getStatus, put, receiveAttack, reset,
+    allSunk, getStatus, put, receiveAttack, reset,
   };
 };
 
