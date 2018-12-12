@@ -5,7 +5,7 @@ const BottomDisplay = ((id) => {
   const container = HTMLElem('div', []);
   const { node } = container;
   node.id = id
-  const grid = ButtonGrid();
+  const grid = ButtonGrid(10, 10, false);
   node.appendChild(grid.node);
   return { node };
 })('BottomDisplay');
