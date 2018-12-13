@@ -1,7 +1,7 @@
 const { Ship } = require('../Ship/Ship');
 
 const Gameboard = (width = 10, length = 10) => {
-  let cells = [];
+  let cells = {};
   let ships = [];
   let locations = {};
 
