@@ -7,7 +7,7 @@ const BottomDisplay = ((id) => {
   node.id = id
   const grid = ButtonGrid(10, 10, false);
   node.appendChild(grid.node);
-  return { node };
+  return { grid, node };
 })('BottomDisplay');
 
 module.exports = {

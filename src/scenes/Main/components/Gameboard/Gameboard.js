@@ -22,6 +22,8 @@ const Gameboard = (width = 10, length = 10) => {
     });
   };
 
+  const getLocations = () => locations;
+
   const getShips = () => ships;
 
   const getStatus = (coords) => {
@@ -48,7 +50,6 @@ const Gameboard = (width = 10, length = 10) => {
 
     cellsToOccupy.forEach((coordinate) => { cells[coordinate] = ship; });
     locations[ship.type] = cellsToOccupy;
-    console.log(locations);
     ships.push(ship);
 
     return cellsToOccupy;
@@ -79,7 +80,7 @@ const Gameboard = (width = 10, length = 10) => {
   const reset = () => { cells = []; ships.length = 0; };
 
   return {
-    allSunk, getShips, getStatus, put, randomPlacement, receiveAttack, reset,
+    allSunk, getLocations, getShips, getStatus, put, randomPlacement, receiveAttack, reset,
   };
 };
 
