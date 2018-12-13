@@ -6,18 +6,11 @@ const Gameboard = (width = 10, length = 10) => {
 
   const allSunk = () => ships.reduce((accumulator, ship) => accumulator && ship.isSunk(), true);
 
-  const getStatus = (coords) => {
-    if (coords[0] < width && coords[1] < length) return cells[coords];
-    throw new Error('Requested coordinates are out of bounds');
-  };
-
-  const put = (shipType, start, direction = 'horizontal') => {
-    const ship = Ship(shipType);
+  const placementCoordinates = (shipLength, start, direction) => {
     let x; let y;
     [x, y] = start;
-
-    const cellsToOccupy = (dir => Array.from(Array(ship.length)).map((current, index) => {
-      switch (dir) {
+    return Array.from(Array(shipLength)).map((current, index) => {
+      switch (direction) {
         case 'horizontal':
           return [x + index, y];
         case 'vertical':
@@ -25,10 +18,23 @@ const Gameboard = (width = 10, length = 10) => {
         default:
           throw new Error('Invalid direction');
       }
-    }))(direction);
+    });
+  };
+
+  const getStatus = (coords) => {
+    if (coords[0] < width && coords[1] < length) return cells[coords];
+    throw new Error('Requested coordinates are out of bounds');
+  };
+
+  const put = (shipType, start, direction = 'horizontal') => {
+    const ship = Ship(shipType);
+
+    const cellsToOccupy = placementCoordinates(ship.length, start, direction)
 
     if (cellsToOccupy.reduce((acc, val) => acc && typeof cells[val] === 'undefined', true)) {
-      cellsToOccupy.forEach((coordinate) => { cells[coordinate] = ship; });
+      cellsToOccupy.forEach((coordinate) => {
+        cells[coordinate] = ship;
+      });
       ships.push(ship);
     } else {
       throw new Error('Ships can\'t overlap');
