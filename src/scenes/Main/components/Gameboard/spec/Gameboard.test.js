@@ -67,4 +67,21 @@ describe('Gameboard', () => {
       expect(board.allSunk()).toBe(true);
     });
   });
+
+  describe('randomPlacement', () => {
+    const ships = [
+      'carrier',
+      'battleship',
+      'cruiser',
+      'submarine',
+      'destroyer',
+    ];
+    beforeEach(() => {
+      board.randomPlacement();
+    });
+
+    it('places a ship of every type', () => {
+      expect(board.getShips().map(ship => ship.type)).toEqual(ships);
+    });
+  });
 });

@@ -3,6 +3,7 @@ const { Ship } = require('../Ship/Ship');
 const Gameboard = (width = 10, length = 10) => {
   let cells = [];
   let ships = [];
+  let locations = {};
 
   const allSunk = () => ships.reduce((accumulator, ship) => accumulator && ship.isSunk(), true);
 
@@ -21,6 +22,8 @@ const Gameboard = (width = 10, length = 10) => {
     });
   };
 
+  const getShips = () => ships;
+
   const getStatus = (coords) => {
     if (coords[0] < width && coords[1] < length) return cells[coords];
     throw new Error('Requested coordinates are out of bounds');
@@ -35,12 +38,19 @@ const Gameboard = (width = 10, length = 10) => {
       cellsToOccupy.forEach((coordinate) => {
         cells[coordinate] = ship;
       });
+      locations[ship] = 'This is a test';
       ships.push(ship);
     } else {
       throw new Error('Ships can\'t overlap');
     }
     return cellsToOccupy;
   };
+
+  const randomPlacement = (shipTypes = ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer',]) => {
+    shipTypes.forEach((ship, index) => {
+      put(ship, [0, index]);
+    });
+  }
 
   const receiveAttack = (coordinates) => {
     const cell = getStatus(coordinates);
@@ -61,7 +71,7 @@ const Gameboard = (width = 10, length = 10) => {
   const reset = () => { cells = []; ships.length = 0; };
 
   return {
-    allSunk, getStatus, put, receiveAttack, reset,
+    allSunk, getShips, getStatus, put, randomPlacement, receiveAttack, reset,
   };
 };
 
