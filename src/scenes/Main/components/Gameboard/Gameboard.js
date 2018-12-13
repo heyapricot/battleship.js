@@ -29,20 +29,28 @@ const Gameboard = (width = 10, length = 10) => {
     throw new Error('Requested coordinates are out of bounds');
   };
 
+  const checkOverlap = (coordinates) => {
+    if (coordinates.reduce((acc, val) => acc || typeof cells[val] !== 'undefined', false)) {
+      throw new Error('One of the coordinates overlaps with another object');
+    }
+  };
+
   const put = (shipType, start, direction = 'horizontal') => {
     const ship = Ship(shipType);
 
     const cellsToOccupy = placementCoordinates(ship.length, start, direction)
 
-    if (cellsToOccupy.reduce((acc, val) => acc && typeof cells[val] === 'undefined', true)) {
-      cellsToOccupy.forEach((coordinate) => {
-        cells[coordinate] = ship;
-      });
-      locations[ship] = 'This is a test';
-      ships.push(ship);
-    } else {
-      throw new Error('Ships can\'t overlap');
+    try {
+      checkOverlap(cellsToOccupy);
+    } catch (err) {
+      throw new Error("Can't place ship on the selected coordinates. One of the spaces is already occupied");
     }
+
+    cellsToOccupy.forEach((coordinate) => { cells[coordinate] = ship; });
+    locations[ship.type] = cellsToOccupy;
+    console.log(locations);
+    ships.push(ship);
+
     return cellsToOccupy;
   };
 
