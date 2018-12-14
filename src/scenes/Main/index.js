@@ -16,7 +16,7 @@ const Main = (() => {
   board.randomPlacement();
   Object.values(board.getLocations()).forEach((coordinateArray) => {
     coordinateArray.forEach((coordinate) => {
-      BottomDisplay.grid.getCell(coordinate).changeIcon(['fas', 'fa-dot-circle', 'ship']);
+      BottomDisplay.grid.getCell(coordinate).setCSS(['fas', 'fa-dot-circle', 'ship']);
     });
   });
 })();
