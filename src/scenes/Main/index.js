@@ -13,12 +13,16 @@ const Main = (() => {
   const column = HTMLElem('div', ['col', 'd-flex', 'flex-column', 'justify-content-around'], row.node);
   [TopDisplay, Menu, BottomDisplay].forEach(display => column.node.appendChild(display.node));
   const board = Gameboard();
+
+  const renderShips = (locationsObj) => {
+    for (const key in locationsObj) {
+      if (Object.prototype.hasOwnProperty.call(locationsObj, key)) {
+        locationsObj[key].forEach(coordinate => BottomDisplay.grid.getCell(coordinate).setCSS(['fas', 'fa-dot-circle', key]));
+      }
+    }
+  }
   board.randomPlacement();
-  Object.values(board.getLocations()).forEach((coordinateArray) => {
-    coordinateArray.forEach((coordinate) => {
-      BottomDisplay.grid.getCell(coordinate).setCSS(['fas', 'fa-dot-circle', 'ship']);
-    });
-  });
+  renderShips(board.getLocations());
 })();
 
 
