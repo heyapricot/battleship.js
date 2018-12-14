@@ -1,6 +1,6 @@
 const { Ship } = require('../Ship/Ship');
 
-const Gameboard = (width = 10, length = 10) => {
+const Gameboard = (width = 10, height = 10) => {
   let cells = {};
   let ships = [];
   let locations = {};
@@ -27,7 +27,7 @@ const Gameboard = (width = 10, length = 10) => {
   const getShips = () => ships;
 
   const getStatus = (coords) => {
-    if (coords[0] < width && coords[1] < length) return cells[coords];
+    if (coords[0] < width && coords[1] < height) return cells[coords];
     throw new Error('Requested coordinates are out of bounds');
   };
 
@@ -56,9 +56,23 @@ const Gameboard = (width = 10, length = 10) => {
   };
 
   const randomPlacement = (shipTypes = ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer',]) => {
-    shipTypes.forEach((ship, index) => {
-      put(ship, [0, index]);
-    });
+    const getRandomInt = (min, max) => {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
+    }
+
+    const shipQueue = shipTypes;
+
+    while (shipQueue.length > 0) {
+      let ship = shipQueue.shift();
+
+      try {
+        put(ship, [getRandomInt(0, width - 1), getRandomInt(0, height - 1)]);
+      } catch (err) {
+        shipQueue.push(ship);
+      }
+    }
   }
 
   const receiveAttack = (coordinates) => {
