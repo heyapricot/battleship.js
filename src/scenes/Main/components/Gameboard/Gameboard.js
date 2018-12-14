@@ -55,20 +55,21 @@ const Gameboard = (width = 10, height = 10) => {
     return cellsToOccupy;
   };
 
-  const randomPlacement = (shipTypes = ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer',]) => {
+  const randomPlacement = (shipTypes = ['carrier', 'battleship', 'cruiser', 'submarine', 'destroyer']) => {
     const getRandomInt = (min, max) => {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
     }
 
+    const directions = ['horizontal', 'vertical'];
     const shipQueue = shipTypes;
 
     while (shipQueue.length > 0) {
       let ship = shipQueue.shift();
 
       try {
-        put(ship, [getRandomInt(0, width - 1), getRandomInt(0, height - 1)]);
+        put(ship, [getRandomInt(0, width), getRandomInt(0, height)], directions[getRandomInt(0, 2)]);
       } catch (err) {
         shipQueue.push(ship);
       }
