@@ -17,11 +17,14 @@ const Main = (() => {
   const renderShips = (locationsObj) => {
     for (const key in locationsObj) {
       if (Object.prototype.hasOwnProperty.call(locationsObj, key)) {
-        locationsObj[key].forEach(coordinate => BottomDisplay.grid.getCell(coordinate).setCSS(['fas', 'fa-dot-circle', key]));
+        console.log(locationsObj[key]);
+        locationsObj[key].forEach(coordinate => BottomDisplay.grid.getCell(coordinate).setCSS(['fas', 'fa-circle', key]));
       }
     }
   }
   board.randomPlacement();
+  console.log('Cells: ');
+  console.log(board.getCells())
   renderShips(board.getLocations());
 })();
 

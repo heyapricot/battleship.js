@@ -22,6 +22,8 @@ const Gameboard = (width = 10, height = 10) => {
     });
   };
 
+  const getCells = () => cells;
+
   const getLocations = () => locations;
 
   const getShips = () => ships;
@@ -32,9 +34,14 @@ const Gameboard = (width = 10, height = 10) => {
   };
 
   const checkOverlap = (coordinates) => {
-    if (coordinates.reduce((acc, val) => acc || typeof cells[val] !== 'undefined', false)) {
-      throw new Error('One of the coordinates overlaps with another object');
-    }
+    let x;
+    let y;
+    coordinates.forEach((coords) => {
+      [x, y] = coords;
+      if (x >= width) throw new Error('Horizontal index out of bounds');
+      if (y >= height) throw new Error('Vertical index out of bounds');
+      if (typeof cells[coords] !== 'undefined') throw new Error('One of the coordinates overlaps with another object');
+    });
   };
 
   const put = (shipType, start, direction = 'horizontal') => {
@@ -95,7 +102,7 @@ const Gameboard = (width = 10, height = 10) => {
   const reset = () => { cells = []; ships.length = 0; };
 
   return {
-    allSunk, getLocations, getShips, getStatus, put, randomPlacement, receiveAttack, reset,
+    allSunk, getCells, getLocations, getShips, getStatus, put, randomPlacement, receiveAttack, reset,
   };
 };
 
