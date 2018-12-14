@@ -14,7 +14,11 @@ const Main = (() => {
   [TopDisplay, Menu, BottomDisplay].forEach(display => column.node.appendChild(display.node));
   const board = Gameboard();
   board.randomPlacement();
-  BottomDisplay.grid.getCell([0, 0]).changeIcon(['fas', 'fa-certificate']);
+  Object.values(board.getLocations()).forEach((coordinateArray) => {
+    coordinateArray.forEach((coordinate) => {
+      BottomDisplay.grid.getCell(coordinate).changeIcon(['fas', 'fa-dot-circle', 'ship']);
+    });
+  });
 })();
 
 
