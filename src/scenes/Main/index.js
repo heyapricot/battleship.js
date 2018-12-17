@@ -1,8 +1,7 @@
 const { HTMLElem } = require('./components/HTMLElem/HTMLElem');
-const { BottomDisplay } = require('./components/BottomDisplay/BottomDisplay');
+const { Display } = require('./components/Display/Display');
 const { Gameboard } = require('./components/Gameboard/Gameboard');
 const { Menu } = require('./components/Menu/Menu');
-const { TopDisplay } = require('./components/TopDisplay/TopDisplay');
 import './style.scss';
 
 const Main = (() => {
@@ -11,6 +10,8 @@ const Main = (() => {
   const container = HTMLElem('div', ['container', 'h-100'], mainSection.node)
   const row = HTMLElem('div', ['row', 'h-100'], container.node);
   const column = HTMLElem('div', ['col', 'd-flex', 'flex-column', 'justify-content-around'], row.node);
+  const displays = ['BottomDisplay', 'TopDisplay'].map(id => Display(id));
+  const [BottomDisplay, TopDisplay] = displays;
   [TopDisplay, Menu, BottomDisplay].forEach(display => column.node.appendChild(display.node));
   const board = Gameboard();
 

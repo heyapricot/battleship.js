@@ -1,7 +1,7 @@
 const { ButtonGrid } = require('../ButtonGrid/ButtonGrid');
 const { HTMLElem } = require('../HTMLElem/HTMLElem');
 
-const BottomDisplay = ((id) => {
+const Display = (id) => {
   const container = HTMLElem('div', []);
   const { node } = container;
   node.id = id
@@ -11,8 +11,8 @@ const BottomDisplay = ((id) => {
   const markAttack = (coordinates, cssClasses) => { grid.getCell(coordinates).setCSS(cssClasses); };
 
   return { grid, markAttack, node };
-})('BottomDisplay');
+}
 
 module.exports = {
-  BottomDisplay,
+  Display,
 };
