@@ -1,10 +1,6 @@
 # Webstorm
 .idea
 
-# Webpack bundle
-main.js.map
-main.js
-
 # Logs
 logs
 *.log
