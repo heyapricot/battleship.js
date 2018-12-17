@@ -38,12 +38,15 @@ const Main = (() => {
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   async function simulateAttack(ms) {
+    let message = '';
     while (boards.reduce((acc, val) => acc || val.allSunk(), false) === false) {
       AIattack(TopGameboard, TopDisplay);
       await sleep(ms);
       AIattack(BottomGameboard, BottomDisplay);
       await sleep(ms);
     }
+    TopGameboard.allSunk() ? message = 'You win' : message = 'You lose';
+    alert(message);
   }
 
   boards.forEach(board => board.randomPlacement());
