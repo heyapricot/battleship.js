@@ -39,7 +39,14 @@ const Main = (() => {
     display.markAttack(coords, cssClasses);
   };
 
-  const onClick = () => {
+  const onClick = (coord) => {
+    const cssClasses = ['fas', 'fa-circle'];
+
+    if (TopDisplay.isCellMarked(coord) !== true) {
+      TopGameboard.receiveAttack(coord) ? cssClasses.push('hit') : cssClasses.push('miss');
+      TopDisplay.markAttack(coord, cssClasses);
+    }
+
     if (boards.reduce((acc, val) => acc || val.allSunk(), false) === false) {
       AIattack(BottomGameboard, BottomDisplay);
     } else {
@@ -64,7 +71,7 @@ const Main = (() => {
   }
 
   boards.forEach(board => board.randomPlacement());
-  TopDisplay.renderShips(TopGameboard.getLocations());
+  // TopDisplay.renderShips(TopGameboard.getLocations());
   TopDisplay.grid.addClickFn(onClick);
   BottomDisplay.renderShips(BottomGameboard.getLocations());
   // simulateAttack(50);

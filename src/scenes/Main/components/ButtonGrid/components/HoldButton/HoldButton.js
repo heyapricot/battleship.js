@@ -1,6 +1,6 @@
 const { HTMLElem } = require('../../../HTMLElem/HTMLElem');
 
-const HoldButton = (parentNode, clickable = true) => {
+const HoldButton = (parentNode, clickable = true, coordinate) => {
   let activeIconClasses = ['fas', 'fa-circle'];
   const button = HTMLElem('i', [...activeIconClasses, 'target'], parentNode);
   const { node } = button;
@@ -15,7 +15,7 @@ const HoldButton = (parentNode, clickable = true) => {
   const addClickFunction = fn => clickFunctions.push(fn);
 
   const onClick = () => {
-    clickFunctions.forEach(fn => fn());
+    clickFunctions.forEach(fn => fn(coordinate));
   };
 
   const setAsClickable = () => {
@@ -24,7 +24,7 @@ const HoldButton = (parentNode, clickable = true) => {
   };
 
   if (clickable) setAsClickable();
-  return { addClickFunction, setCSS, node };
+  return { addClickFunction, coordinate, setCSS, node };
 };
 
 module.exports = {
