@@ -15,6 +15,8 @@ const ButtonGrid = (width = 10, height = 10, clickable = true) => {
     return hb;
   });
 
+  const addClickFn = fn => cells.forEach(button => button.addClickFunction(fn));
+
   const getCell = (coordinates) => {
     let x;
     let y;
@@ -22,7 +24,7 @@ const ButtonGrid = (width = 10, height = 10, clickable = true) => {
     const index = x + (y * height);
     return cells[index];
   };
-  return { getCell, node };
+  return { addClickFn, getCell, node };
 };
 
 module.exports = {

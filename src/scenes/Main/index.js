@@ -39,6 +39,16 @@ const Main = (() => {
     display.markAttack(coords, cssClasses);
   };
 
+  const onClick = () => {
+    if (boards.reduce((acc, val) => acc || val.allSunk(), false) === false) {
+      AIattack(BottomGameboard, BottomDisplay);
+    } else {
+      let message = '';
+      TopGameboard.allSunk() ? message = 'You win' : message = 'You lose';
+      alert(message);
+    }
+  }
+
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   async function simulateAttack(ms) {
@@ -55,8 +65,9 @@ const Main = (() => {
 
   boards.forEach(board => board.randomPlacement());
   TopDisplay.renderShips(TopGameboard.getLocations());
+  TopDisplay.grid.addClickFn(onClick);
   BottomDisplay.renderShips(BottomGameboard.getLocations());
-  simulateAttack(50);
+  // simulateAttack(50);
 })();
 
 

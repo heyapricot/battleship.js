@@ -11,15 +11,20 @@ const HoldButton = (parentNode, clickable = true) => {
     );
     activeIconClasses = iconClasses;
   };
+
+  const addClickFunction = fn => clickFunctions.push(fn);
+
   const onClick = () => {
-    setCSS(['fas', 'fa-certificate']);
+    clickFunctions.forEach(fn => fn());
   };
+
   const setAsClickable = () => {
     node.classList.toggle('clickable');
     node.addEventListener('click', onClick);
   };
+
   if (clickable) setAsClickable();
-  return { setCSS, node };
+  return { addClickFunction, setCSS, node };
 };
 
 module.exports = {
