@@ -23,30 +23,33 @@ const Main = (() => {
     return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
   };
 
-  const AIattack = () => {
+  const AIattack = (gameboard, display) => {
     let coords = NaN;
     const cssClasses = ['fas', 'fa-circle'];
 
     do {
       coords = [getRandomInt(0, 10), getRandomInt(0, 10)];
-    } while (BottomDisplay.isCellMarked(coords));
+    } while (display.isCellMarked(coords));
 
-    BottomGameboard.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
-    BottomDisplay.markAttack(coords, cssClasses);
+    gameboard.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
+    display.markAttack(coords, cssClasses);
   };
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-  async function simulateAttack() {
-    while (BottomGameboard.allSunk() === false) {
-      AIattack();
-      await sleep(100);
+  async function simulateAttack(ms) {
+    while (boards.reduce((acc, val) => acc || val.allSunk(), false) === false) {
+      AIattack(TopGameboard, TopDisplay);
+      await sleep(ms);
+      AIattack(BottomGameboard, BottomDisplay);
+      await sleep(ms);
     }
   }
 
-  BottomGameboard.randomPlacement();
+  boards.forEach(board => board.randomPlacement());
+  TopDisplay.renderShips(TopGameboard.getLocations());
   BottomDisplay.renderShips(BottomGameboard.getLocations());
-  simulateAttack();
+  simulateAttack(50);
 })();
 
 
