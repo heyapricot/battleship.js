@@ -13,7 +13,11 @@ const Main = (() => {
   const column = HTMLElem('div', ['col', 'd-flex', 'flex-column', 'justify-content-around'], row.node);
   const boards = Array.from(Array(2)).map(() => Gameboard());
   const [BottomGameboard, TopGameboard] = boards;
-  const displays = ['BottomDisplay', 'TopDisplay'].map(id => Display(id));
+  const displays = ['BottomDisplay', 'TopDisplay'].map((id, index) => {
+    let clickable = false;
+    if (index === 1) clickable = true;
+    return Display(id, clickable);
+  });
   const [BottomDisplay, TopDisplay] = displays;
   [TopDisplay, Menu, BottomDisplay].forEach(display => column.node.appendChild(display.node));
 
