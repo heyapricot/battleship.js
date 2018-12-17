@@ -22,34 +22,29 @@ const Main = (() => {
     return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
   };
 
+  const AIattack = () => {
+    let coords = NaN;
+    const cssClasses = ['fas', 'fa-circle'];
+
+    do {
+      coords = [getRandomInt(0, 10), getRandomInt(0, 10)];
+    } while (BottomDisplay.isCellMarked(coords));
+
+    board.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
+    BottomDisplay.markAttack(coords, cssClasses);
+  };
+
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   async function simulateAttack() {
-    let coords = NaN;
     while (board.allSunk() === false) {
-      const cssClasses = ['fas', 'fa-circle'];
-
-      do {
-        coords = [getRandomInt(0, 10), getRandomInt(0, 10)];
-      } while (BottomDisplay.isCellMarked(coords));
-
-      board.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
-      BottomDisplay.markAttack(coords, cssClasses);
+      AIattack();
       await sleep(100);
     }
   }
 
-  const renderShips = (locationsObj) => {
-    for (const key in locationsObj) {
-      if (Object.prototype.hasOwnProperty.call(locationsObj, key)) {
-        console.log(locationsObj[key]);
-        locationsObj[key].forEach(coordinate => BottomDisplay.grid.getCell(coordinate).setCSS(['fas', 'fa-circle', key]));
-      }
-    }
-  };
-
   board.randomPlacement();
-  renderShips(board.getLocations());
+  BottomDisplay.renderShips(board.getLocations());
   simulateAttack();
 })();
 

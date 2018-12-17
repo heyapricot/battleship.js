@@ -12,8 +12,16 @@ const Display = (id) => {
 
   const markAttack = (coordinates, cssClasses) => { grid.getCell(coordinates).setCSS(cssClasses); };
 
+  const renderShips = (locationsObj) => {
+    for (const key in locationsObj) {
+      if (Object.prototype.hasOwnProperty.call(locationsObj, key)) {
+        locationsObj[key].forEach(coordinate => grid.getCell(coordinate).setCSS(['fas', 'fa-circle', key]));
+      }
+    }
+  };
+
   return {
-    grid, isCellMarked, markAttack, node,
+    grid, isCellMarked, markAttack, renderShips, node,
   };
 }
 
