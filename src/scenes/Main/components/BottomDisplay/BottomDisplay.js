@@ -7,7 +7,10 @@ const BottomDisplay = ((id) => {
   node.id = id
   const grid = ButtonGrid(10, 10, false);
   node.appendChild(grid.node);
-  return { grid, node };
+
+  const markAttack = (coordinates, cssClasses) => { grid.getCell(coordinates).setCSS(cssClasses); };
+
+  return { grid, markAttack, node };
 })('BottomDisplay');
 
 module.exports = {

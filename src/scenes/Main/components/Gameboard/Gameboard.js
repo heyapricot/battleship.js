@@ -85,16 +85,11 @@ const Gameboard = (width = 10, height = 10) => {
 
   const receiveAttack = (coordinates) => {
     const cell = getStatus(coordinates);
-    switch (typeof cell) {
-      case 'undefined':
-        cells[coordinates] = false;
-        break;
-      case 'object':
-        cell.hit();
-        cells[coordinates] = true;
-        break;
-      default:
-        return false;
+    if (typeof cell === 'undefined') {
+      cells[coordinates] = false;
+    } else if (typeof cell === 'object') {
+      cell.hit();
+      cells[coordinates] = true;
     }
     return getStatus(coordinates);
   };

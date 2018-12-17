@@ -14,6 +14,26 @@ const Main = (() => {
   [TopDisplay, Menu, BottomDisplay].forEach(display => column.node.appendChild(display.node));
   const board = Gameboard();
 
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; // The maximum is exclusive and the minimum is inclusive
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function demo() {
+    while (board.allSunk() === false) {
+      const coords = [getRandomInt(0, 10), getRandomInt(0, 10)];
+      const cssClasses = ['fas', 'fa-circle'];
+      board.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
+      BottomDisplay.markAttack(coords, cssClasses);
+      await sleep(100);
+    }
+  }
+
   const renderShips = (locationsObj) => {
     for (const key in locationsObj) {
       if (Object.prototype.hasOwnProperty.call(locationsObj, key)) {
@@ -23,9 +43,10 @@ const Main = (() => {
     }
   }
   board.randomPlacement();
-  console.log('Cells: ');
-  console.log(board.getCells())
   renderShips(board.getLocations());
+  demo();
+  console.log('Cells: ');
+  console.log(board.getCells());
 })();
 
 
