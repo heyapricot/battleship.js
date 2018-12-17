@@ -11,10 +11,11 @@ const Main = (() => {
   const container = HTMLElem('div', ['container', 'h-100'], mainSection.node);
   const row = HTMLElem('div', ['row', 'h-100'], container.node);
   const column = HTMLElem('div', ['col', 'd-flex', 'flex-column', 'justify-content-around'], row.node);
+  const boards = Array.from(Array(2)).map(() => Gameboard());
+  const [BottomGameboard, TopGameboard] = boards;
   const displays = ['BottomDisplay', 'TopDisplay'].map(id => Display(id));
   const [BottomDisplay, TopDisplay] = displays;
   [TopDisplay, Menu, BottomDisplay].forEach(display => column.node.appendChild(display.node));
-  const board = Gameboard();
 
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -30,21 +31,21 @@ const Main = (() => {
       coords = [getRandomInt(0, 10), getRandomInt(0, 10)];
     } while (BottomDisplay.isCellMarked(coords));
 
-    board.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
+    BottomGameboard.receiveAttack(coords) ? cssClasses.push('hit') : cssClasses.push('miss');
     BottomDisplay.markAttack(coords, cssClasses);
   };
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
   async function simulateAttack() {
-    while (board.allSunk() === false) {
+    while (BottomGameboard.allSunk() === false) {
       AIattack();
       await sleep(100);
     }
   }
 
-  board.randomPlacement();
-  BottomDisplay.renderShips(board.getLocations());
+  BottomGameboard.randomPlacement();
+  BottomDisplay.renderShips(BottomGameboard.getLocations());
   simulateAttack();
 })();
 
